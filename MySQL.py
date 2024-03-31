@@ -17,11 +17,7 @@ def connection_mysql():
     return mydb
 
 
-def products_mysql(mydb, *args):
-    if len([*args]) != 5:
-        raise ValueError("More then 5 has passed")
-
-
+def products_mysql(mydb, product_id, name, description, price, quantity):
     mycursor = mydb.cursor()
 
     # ez egy formula a %s place holderek
@@ -31,25 +27,22 @@ def products_mysql(mydb, *args):
 
     # igy használjuk a formulat
 
-    mycursor.execute(ProductsFormula, args)
+    mycursor.execute(ProductsFormula, (product_id, name, description, price, quantity))
 
     # ezzel tudjuk menteni a changeket!!!!!!!!
     mydb.commit()
 
 
-def supplier_mysql(mydb, *args):
-    if len([*args]) != 3:
-        raise ValueError("More then 3 has passed")
-
+def supplier_mysql(mydb, supplier_id, name, contact_info, price, quantity):
     mycursor = mydb.cursor()
 
     # ez egy formula a %s place holderek
 
-    SupplierFormula = "INSERT INTO suppliers (supplier_id, name, contact_info) VALUES (%s, %s, %s)"
+    SupplierFormula = "INSERT INTO suppliers (supplier_id, name, contact_info, price, quantity) VALUES (%s, %s, %s, %s, %s)"
 
     # igy használjuk a formulat
 
-    mycursor.execute(SupplierFormula, args)
+    mycursor.execute(SupplierFormula, (supplier_id, name, contact_info, price, quantity))
 
     # ezzel tudjuk menteni a changeket!!!!!!!!
     mydb.commit()
