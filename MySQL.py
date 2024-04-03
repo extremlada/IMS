@@ -74,4 +74,11 @@ def orders_mysql(mydb, order_id, product_id, supplier_id, quantity):
     mydb.commit()
 
 
+def Get_data_orders(mydb):
+
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT * FROM orders")
+    result = mycursor.fetchall()
+    return result
+
 connection_mysql()

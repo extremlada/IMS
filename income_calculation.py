@@ -10,7 +10,6 @@ def calculate_income(mydb):
                      "JOIN products ON orders.product_id = products.product_id")
     total_income = mycursor.fetchone()[0]
 
-    mycursor.close()
     return total_income
 
 
@@ -21,7 +20,6 @@ def calculate_spend(mydb):
     mycursor.execute("SELECT SUM(suppliers.price * suppliers.quantity) AS total_spend FROM suppliers")
     total_spend = mycursor.fetchone()[0]
 
-    mycursor.close()
     return total_spend
 
 
