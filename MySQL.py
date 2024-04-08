@@ -77,8 +77,27 @@ def orders_mysql(mydb, order_id, product_id, supplier_id, quantity):
 def Get_data_orders(mydb):
 
     mycursor = mydb.cursor()
-    mycursor.execute("SELECT * FROM orders")
+    mycursor.execute("SELECT orders.*, products.name FROM orders JOIN products ON orders.product_id = products.product_id;")
     result = mycursor.fetchall()
+    return result
+
+def Get_orders_date(mydb):
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT order_date FROM orders")
+    result = mycursor.fetchall()
+    return result
+
+def Get_suppliers_info(mydb):
+    mycursor = mydb.cursor()
+    mycursor.execute("SELECT name FROM suppliers")
+    result = mycursor.fetchall()
+    return result
+
+def orders_by_date(mydb, order_date):
+    mycursors = mydb.cursor()
+    oder_date_formula = ("SELECT * FROM `orders` WHERE order_date = %s;")
+    mycursors.execute(oder_date_formula, order_date)
+    result = mycursors.fetchall()
     return result
 
 connection_mysql()
