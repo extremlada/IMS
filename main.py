@@ -88,60 +88,77 @@ def tabs():
     tabs.pack(pady=10)
     raktar_tab = tabs.add(name="raktár")
 
-
-
-class tree_Frame(ctk.CTkFrame):
+class MyTabView(customtkinter.CTkTabview):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
-        self.tree = ttk.Treeview(self, columns=("c1", "c2", "c3", "c4", "c5"), show='headings')
-        self.tree.column("#1", anchor=tk.CENTER)
-        self.tree.heading("#1", text="order_id")
-        self.tree.column("#2", anchor=tk.CENTER)
-        self.tree.heading("#2", text="product_id")
-        self.tree.column("#3", anchor=tk.CENTER)
-        self.tree.heading("#3", text="supplier_id")
-        self.tree.column("#4", anchor=tk.CENTER)
-        self.tree.heading("#4", text="quantity")
-        self.tree.column("#5", anchor=tk.CENTER)
-        self.tree.heading("#5", text="order_date")
-        self.tree.grid(row=0, column=1, pady=5, padx=10)
+        # create tabs
+        self.add("raktár")
+        self.add("pénzügy")
+        self.add("tab 3")
+        self.add("tab 4")
+
+
+        class tree_Frame(ctk.CTkFrame):
+            def __init__(self, master, **kwargs):
+                super().__init__(master, **kwargs)
+
+
+                self.tree = ttk.Treeview(self, columns=("c1", "c2", "c3", "c4", "c5"), show='headings')
+                self.tree.column("#1", anchor=tk.CENTER)
+                self.tree.heading("#1", text="order_id")
+                self.tree.column("#2", anchor=tk.CENTER)
+                self.tree.heading("#2", text="product_id")
+                self.tree.column("#3", anchor=tk.CENTER)
+                self.tree.heading("#3", text="supplier_id")
+                self.tree.column("#4", anchor=tk.CENTER)
+                self.tree.heading("#4", text="quantity")
+                self.tree.column("#5", anchor=tk.CENTER)
+                self.tree.heading("#5", text="order_date")
+                self.tree.grid(row=0, column=1, pady=5, padx=10)
 
 
 
-class dropdown_buttons(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
+        class dropdown_buttons(ctk.CTkFrame):
+            def __init__(self, master, **kwargs):
+                super().__init__(master, **kwargs)
 
-        self.dropdown_button = ctk.CTkOptionMenu(self, state="disabled", values=dropdown_options_date(),
-                                                 command=lambda choice: choice)
-        self.dropdown_button.grid(row=1, column=1, pady=5, padx=10)
-        self.dropdown_button_suppliers = ctk.CTkOptionMenu(self, state="disabled", values=dropdown_options_company())
-        self.dropdown_button_suppliers.grid(row=1, column=0, pady=5, padx=10)
-        self.radio_var = ctk.StringVar(value="on")
-        self.radio_button = ctk.CTkCheckBox(self, text="press for query", offvalue="off", onvalue="on",
-                                            variable=self.radio_var, command=lambda: radio_button_pressed(self))
-        self.radio_button.grid(row=1, column=3, pady=5, padx=10)
+                self.dropdown_button = ctk.CTkOptionMenu(self, state="disabled", values=dropdown_options_date(),
+                                                         command=lambda choice: choice)
+                self.dropdown_button.grid(row=1, column=1, pady=5, padx=10)
+                self.dropdown_button_suppliers = ctk.CTkOptionMenu(self, state="disabled", values=dropdown_options_company())
+                self.dropdown_button_suppliers.grid(row=1, column=0, pady=5, padx=10)
+                self.radio_var = ctk.StringVar(value="on")
+                self.radio_button = ctk.CTkCheckBox(self, text="press for query", offvalue="off", onvalue="on",
+                                                    variable=self.radio_var, command=lambda: radio_button_pressed(self))
+                self.radio_button.grid(row=1, column=3, pady=5, padx=10)
 
 
-class button_frame1(ctk.CTkFrame):
-    def __init__(self, master, tree_frame, dropdown_buttons_instance, **kwargs):
-        super().__init__(master, **kwargs)
+        class button_frame1(ctk.CTkFrame):
+            def __init__(self, master, tree_frame, dropdown_buttons_instance, **kwargs):
+                super().__init__(master, **kwargs)
 
-        button1 = ctk.CTkButton(self, text="Display data", command=lambda: display_data(tree_frame, dropdown_buttons_instance))
-        button1.grid(row=1, column=1, pady=5, padx=10)
-        button2 = ctk.CTkButton(self, text="Income calculation", command=lambda: income())
-        button2.grid(row=1, column=2, pady=5, padx=10)
-        income_label = ctk.CTkLabel(self, text=calculate_income(mydb), bg_color="#9097E1", )
-        income_label.grid(row=2, column=1, pady=5, padx=10)
+                button1 = ctk.CTkButton(self, text="Display data", command=lambda: display_data(tree_frame, dropdown_buttons_instance))
+                button1.grid(row=1, column=1, pady=5, padx=10)
+                button2 = ctk.CTkButton(self, text="Income calculation", command=lambda: income())
+                button2.grid(row=1, column=2, pady=5, padx=10)
+                income_label = ctk.CTkLabel(self, text=calculate_income(mydb), bg_color="#9097E1", )
+                income_label.grid(row=2, column=1, pady=5, padx=10)
 
-class change_frame_button(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
+        class change_frame_button(ctk.CTkFrame):
+            def __init__(self, master, **kwargs):
+                super().__init__(master, **kwargs)
 
-        raktar = ctk.CTkButton(self, text="raktáram", command=lambda: controller.show_frame("MainPage"))
-        raktar.grid(row=1, column=0, pady=5, padx=10)
+                raktar = ctk.CTkButton(self, text="raktáram", command=lambda: controller.show_frame("MainPage"))
+                raktar.grid(row=1, column=0, pady=5, padx=10)
 
+        self.idk = tree_Frame(master=self.tab("raktár"))
+        self.idk.grid(row=0, column=0, pady=10, padx=20)
+        self.dropdown_button_fram = dropdown_buttons(master=self.tab("raktár"))
+        self.dropdown_button_fram.grid(row=1, column=0, pady=10, padx=20)
+        self.button_fram = button_frame1(master=self.tab("raktár"), tree_frame=self.idk,
+                                         dropdown_buttons_instance=self.dropdown_button_fram)
+        self.button_fram.grid(row=2, column=0, pady=10, padx=20)
 
 
 class App(ctk.CTk):
@@ -150,18 +167,20 @@ class App(ctk.CTk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
+        self.tab_view = MyTabView(master=self)
+        self.tab_view.grid(row=0, column=0, padx=20, pady=20)
 
-        self.my_frame = tree_Frame(master=self)
-        self.my_frame.grid(row=1, column=1, padx=20, pady=5, sticky='nsew')
-
-        self.buttonchangeframe = change_frame_button(master=self)
-        self.buttonchangeframe.grid(row=1, column=0, padx=0, pady=5, sticky='nsew', rowspan=3)
-
-        self.dropdown_buttonsframe = dropdown_buttons(master=self)
-        self.dropdown_buttonsframe.grid(row=2, column=1, padx=20, pady=5, sticky='nsew')
-
-        self.buttonframe = button_frame1(master=self, tree_frame=self.my_frame, dropdown_buttons_instance=self.dropdown_buttonsframe)
-        self.buttonframe.grid(row=3, column=1, padx=20, pady=5, sticky='nsew')
+        #self.my_frame = tree_Frame(master=self)
+        #self.my_frame.grid(row=1, column=1, padx=20, pady=5, sticky='nsew')
+#
+        #self.buttonchangeframe = change_frame_button(master=self)
+        #self.buttonchangeframe.grid(row=1, column=0, padx=0, pady=5, sticky='nsew', rowspan=3)
+#
+        #self.dropdown_buttonsframe = dropdown_buttons(master=self)
+        #self.dropdown_buttonsframe.grid(row=2, column=1, padx=20, pady=5, sticky='nsew')
+#
+        #self.buttonframe = button_frame1(master=self, tree_frame=self.my_frame, dropdown_buttons_instance=self.dropdown_buttonsframe)
+        #self.buttonframe.grid(row=3, column=1, padx=20, pady=5, sticky='nsew')
 
 
 

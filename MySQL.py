@@ -77,7 +77,8 @@ def orders_mysql(mydb, order_id, product_id, supplier_id, quantity):
 def Get_data_orders(mydb):
 
     mycursor = mydb.cursor()
-    mycursor.execute("SELECT orders.*, products.name FROM orders JOIN products ON orders.product_id = products.product_id;")
+    mycursor.execute("SELECT orders.*, products.name FROM orders "
+                     "JOIN products ON orders.product_id = products.product_id;")
     result = mycursor.fetchall()
     return result
 
