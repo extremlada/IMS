@@ -18,6 +18,14 @@ def connection_mysql():
     return mydb
 
 
+def login(mydb, username, password):
+    mycursors = mydb.cursor()
+    oder_date_formula = ("SELECT * FROM login WHERE (username, password) = (%s, %s);")
+    mycursors.execute(oder_date_formula, (username, password))
+    result = mycursors.fetchall()
+    return result
+
+
 def products_mysql(mydb, product_id, name, description, price, quantity):
     mycursor = mydb.cursor()
 

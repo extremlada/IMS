@@ -99,8 +99,12 @@ class LoginWindow(ctk.CTk):
     def login(self):
         # Add your login logic here
         # For simplicity, let's just check if the username and password are "admin"
-        if self.username_entry.get() == "admin" and self.password_entry.get() == "admin":
+        mydb = connection_mysql()
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        if login(mydb, username, password):
             # If login is successful, open the main application window
+            mydb.close()
             self.destroy()
             app = App()
             app.mainloop()
