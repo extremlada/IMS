@@ -4,6 +4,11 @@ from income_calculation import *
 import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.backend_bases import key_press_handler
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
+                                               NavigationToolbar2Tk)
 
 mydb = connection_mysql()
 
@@ -21,19 +26,6 @@ def income():
 def check_for_normal_state(dropdown_buttons_instance):
     if dropdown_buttons_instance.dropdown_button.cget("state") == "normal":
         return True
-
-
-#def dropdown_choices(choice, tree_frame):
-#    mydb = connection_mysql()
-#    print(choice)
-#    data = orders_by_date(mydb, [choice])
-#
-#    for item in tree_frame.tree.get_children():
-#        tree_frame.tree.delete(item)
-#
-#    for row in data:
-#        tree_frame.tree.insert("", "end", values=row)
-#    mydb.close()
 
 
 def display_data(tree_frame, dropdown_buttons_instance):
@@ -88,6 +80,32 @@ def tabs():
     tabs.pack(pady=10)
     raktar_tab = tabs.add(name="raktár")
 
+
+class LoginWindow(ctk.CTk):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.title("Login")
+        self.geometry("300x200")
+
+        self.username_entry = ctk.CTkEntry(self, )
+        self.username_entry.pack(pady=10)
+
+        self.password_entry = ctk.CTkEntry(self, show="*")
+        self.password_entry.pack(pady=10)
+
+        self.login_button = ctk.CTkButton(self, text="Login", command=self.login)
+        self.login_button.pack(pady=10)
+
+    def login(self):
+        # Add your login logic here
+        # For simplicity, let's just check if the username and password are "admin"
+        if self.username_entry.get() == "admin" and self.password_entry.get() == "admin":
+            # If login is successful, open the main application window
+            self.destroy()
+            app = App()
+            app.mainloop()
+
+
 class MyTabView(customtkinter.CTkTabview):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
@@ -96,8 +114,6 @@ class MyTabView(customtkinter.CTkTabview):
         self.add("raktár")
         self.add("pénzügy")
         self.add("tab 3")
-        self.add("tab 4")
-
 
         class tree_Frame(ctk.CTkFrame):
             def __init__(self, master, **kwargs):
@@ -145,12 +161,6 @@ class MyTabView(customtkinter.CTkTabview):
                 income_label = ctk.CTkLabel(self, text=calculate_income(mydb), bg_color="#9097E1", )
                 income_label.grid(row=2, column=1, pady=5, padx=10)
 
-        class change_frame_button(ctk.CTkFrame):
-            def __init__(self, master, **kwargs):
-                super().__init__(master, **kwargs)
-
-                raktar = ctk.CTkButton(self, text="raktáram", command=lambda: controller.show_frame("MainPage"))
-                raktar.grid(row=1, column=0, pady=5, padx=10)
 
         self.idk = tree_Frame(master=self.tab("raktár"))
         self.idk.grid(row=0, column=0, pady=10, padx=20)
@@ -161,18 +171,18 @@ class MyTabView(customtkinter.CTkTabview):
         self.button_fram.grid(row=2, column=0, pady=10, padx=20)
 
 
+
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.tab_view = MyTabView(master=self)
-        self.tab_view.grid(row=0, column=0, padx=20, pady=20)
 
-        #self.my_frame = tree_Frame(master=self)
-        #self.my_frame.grid(row=1, column=1, padx=20, pady=5, sticky='nsew')
-#
+        self.tab_view = MyTabView(master=self)
+        self.tab_view.grid(row=0, column=0, padx=10, pady=10)
+
         #self.buttonchangeframe = change_frame_button(master=self)
         #self.buttonchangeframe.grid(row=1, column=0, padx=0, pady=5, sticky='nsew', rowspan=3)
 #
@@ -186,5 +196,5 @@ class App(ctk.CTk):
 
 
 if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+    login_window = LoginWindow(None)
+    login_window.mainloop()

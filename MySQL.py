@@ -13,6 +13,7 @@ def connection_mysql():
         host="localhost",
         user="root",
         database="raktar",
+        password=""
     )
     return mydb
 
