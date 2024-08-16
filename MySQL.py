@@ -110,4 +110,30 @@ def orders_by_date(mydb, order_date):
     result = mycursors.fetchall()
     return result
 
+
+def get_products(name=None, price=None, quantity=None):
+    products_formula = ("SELECT * FROM `products` WHERE 1=1;")
+    params = []
+    if name:
+        products_formula += " AND name = '%s' "
+        params.append(name)
+    if price:
+        products_formula += " AND price = '%s' "
+        params.append(price)
+
+    if quantity:
+        products_formula += " AND quantity = '%s' "
+        params.append(quantity)
+
+    return products_formula, params
+
+
+def fetch_products(mydb, name=None, price=None, quantity=None):
+    mycursors = mydb.cursor()
+    query, params = get_products(name, price, quantity)
+    mycursors.execute(query, params)
+    result = mycursors.fetchall()
+    return result
+
+
 connection_mysql()
